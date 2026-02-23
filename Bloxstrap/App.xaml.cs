@@ -23,11 +23,11 @@ namespace Bloxstrap
 #else
         public const string ProjectName = "Froststrap";
 #endif
-        public const string ProjectOwner = "RealMeddsam";
+        public const string ProjectOwner = "Froststrap";
         public const string ProjectRepository = "RealMeddsam/Froststrap";
-        public const string ProjectDownloadLink = "https://github.com/RealMeddsam/Froststrap/releases";
+        public const string ProjectDownloadLink = "https://github.com/Froststrap/Froststrap/releases";
         public const string ProjectHelpLink = "https://github.com/bloxstraplabs/bloxstrap/wiki";
-        public const string ProjectSupportLink = "https://github.com/RealMeddsam/Froststrap/issues/new";
+        public const string ProjectSupportLink = "https://github.com/Froststrap/Froststrap/issues/new";
         public const string ProjectRemoteDataLink = "https://raw.githubusercontent.com/RealMeddsam/config/refs/heads/main/Data.json";
 
         public const string RobloxPlayerAppName = "RobloxPlayerBeta.exe";

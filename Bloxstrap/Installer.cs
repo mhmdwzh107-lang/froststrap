@@ -562,6 +562,11 @@ namespace Bloxstrap
                     }
                 }
 
+                if (Utilities.CompareVersions(existingVer, "1.4.1.1") == VersionComparison.LessThan)
+                {
+                    App.Settings.Prop.CheckForUpdates = true;
+                }
+
                 App.Settings.Save();
                 App.FastFlags.Save();
                 App.State.Save();

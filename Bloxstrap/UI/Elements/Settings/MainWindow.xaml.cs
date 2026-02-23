@@ -86,6 +86,9 @@ namespace Bloxstrap.UI.Elements.Settings
                 INavigationItem? currentPage = RootNavigation.Current;
                 App.State.Prop.LastPage = currentPage?.PageType.FullName!;
             }
+
+            Frontend.ShowMessageBox("This release is made to move ppl from repo RealMeddsam/Froststrap to Froststrap/Froststrap, if you seem to be stuck in this release, please manually update", MessageBoxImage.Information, MessageBoxButton.OK);
+            Utilities.ShellExecute("https://github.com/Froststrap/Froststrap");
         }
 
         private async void SafeNavigate(Type page)
