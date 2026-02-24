@@ -1149,12 +1149,12 @@ namespace Bloxstrap
             App.SoftTerminate(ErrorCode.ERROR_CANCELLED);
         }
         #endregion
-
         #region App Install
         private async Task<bool> CheckForUpdates()
         {
             const string LOG_IDENT = "Bootstrapper::CheckForUpdates";
 
+            // Basic safety check: don't update if another instance is already doing it
             if (Process.GetProcessesByName(App.ProjectName).Length > 1)
             {
                 App.Logger.WriteLine(LOG_IDENT, $"More than one {App.ProjectName} instance running, aborting update check.");
@@ -1168,30 +1168,21 @@ namespace Bloxstrap
             if (releaseInfo is null)
                 return false;
 
-            string currentVer = App.Version;
             string releaseVer = releaseInfo.TagName;
 
-            var versionComparison = Utilities.CompareVersions(currentVer, releaseVer);
+            // Logic removed: We no longer compare currentVer vs releaseVer. 
+            // We proceed directly to the update prompt/process.
+            App.Logger.WriteLine(LOG_IDENT, $"Forcing update to version: {releaseVer}");
 
-            if (versionComparison == VersionComparison.LessThan)
+            var result = Frontend.ShowMessageBox(
+                $"A new version {releaseVer} is available. Would you like to update now?",
+                MessageBoxImage.Question,
+                MessageBoxButton.YesNo
+            );
+
+            if (result != MessageBoxResult.Yes)
             {
-                App.Logger.WriteLine(LOG_IDENT, $"Update available: {currentVer} -> {releaseVer}");
-
-                var result = Frontend.ShowMessageBox(
-                    $"A new version {releaseVer} is available. Would you like to update now?",
-                    MessageBoxImage.Question,
-                    MessageBoxButton.YesNo
-                );
-
-                if (result != MessageBoxResult.Yes)
-                {
-                    App.Logger.WriteLine(LOG_IDENT, "User declined the update.");
-                    return false;
-                }
-            }
-            else
-            {
-                App.Logger.WriteLine(LOG_IDENT, $"No update required. Current version: {currentVer}, Release version: {releaseVer}");
+                App.Logger.WriteLine(LOG_IDENT, "User declined the forced update.");
                 return false;
             }
 
@@ -1249,12 +1240,12 @@ namespace Bloxstrap
                 var process = Process.Start(startInfo);
                 if (process == null)
                 {
-                    var result = Frontend.ShowMessageBox(
+                    var failResult = Frontend.ShowMessageBox(
                         string.Format(Strings.Bootstrapper_AutoUpdateFailed, version),
-                    MessageBoxImage.Information,
-                    MessageBoxButton.YesNo);
+                        MessageBoxImage.Information,
+                        MessageBoxButton.YesNo);
 
-                    if (result == MessageBoxResult.Yes)
+                    if (failResult == MessageBoxResult.Yes)
                     {
                         Utilities.ShellExecute(App.ProjectDownloadLink);
                     }
@@ -1265,15 +1256,15 @@ namespace Bloxstrap
             }
             catch (Exception ex)
             {
-                App.Logger.WriteLine(LOG_IDENT, "An exception occurred when running the auto-updater");
+                App.Logger.WriteLine(LOG_IDENT, "An exception occurred during the forced update.");
                 App.Logger.WriteException(LOG_IDENT, ex);
 
-                var result = Frontend.ShowMessageBox(
+                var failResult = Frontend.ShowMessageBox(
                     string.Format(Strings.Bootstrapper_AutoUpdateFailed, version),
                     MessageBoxImage.Information,
                     MessageBoxButton.YesNo);
 
-                if (result == MessageBoxResult.Yes)
+                if (failResult == MessageBoxResult.Yes)
                 {
                     Utilities.ShellExecute(App.ProjectDownloadLink);
                 }
@@ -1282,7 +1273,6 @@ namespace Bloxstrap
             return false;
         }
         #endregion
-
         #region Roblox Install
         private static bool TryDeleteRobloxInDirectory(string dir)
         {

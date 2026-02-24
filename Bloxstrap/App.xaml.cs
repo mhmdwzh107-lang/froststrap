@@ -24,7 +24,7 @@ namespace Bloxstrap
         public const string ProjectName = "Froststrap";
 #endif
         public const string ProjectOwner = "Froststrap";
-        public const string ProjectRepository = "RealMeddsam/Froststrap";
+        public const string ProjectRepository = "Froststrap/Froststrap";
         public const string ProjectDownloadLink = "https://github.com/Froststrap/Froststrap/releases";
         public const string ProjectHelpLink = "https://github.com/bloxstraplabs/bloxstrap/wiki";
         public const string ProjectSupportLink = "https://github.com/Froststrap/Froststrap/issues/new";

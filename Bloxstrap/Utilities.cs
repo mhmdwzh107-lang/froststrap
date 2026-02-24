@@ -30,6 +30,8 @@ namespace Bloxstrap
 
         public static Version GetVersionFromString(string version)
         {
+            version = version.Trim();
+
             if (version.StartsWith('v'))
                 version = version[1..];
 
@@ -37,7 +39,10 @@ namespace Bloxstrap
             if (idx != -1)
                 version = version[..idx];
 
-            return new Version(version);
+            if (Version.TryParse(version, out Version? result))
+                return result;
+
+            return new Version(0, 0);
         }
 
         /// <summary>
